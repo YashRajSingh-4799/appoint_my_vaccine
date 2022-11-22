@@ -36,7 +36,11 @@ app.use("/server/auth", auth);
 app.use("/server/hospital", hospital);
 app.use("/server/users", users);
 app.use("/server/vaccinator", vaccinator);
-// app.use("/server/auth", auth);
+
+app.use((err,req,res,next)=>{
+   return res.status(500).json("error")
+    
+})
 
 app.listen(8800, ()=>{
     connect()

@@ -16,7 +16,7 @@ try{
 
 // update
 router.put("/:id", async (req,res)=>{
-    // const newHospital =new hospital(req.body)
+   
     try{
         const updateHospital =await hospital.findByIdAndUpdate(req.params.id, 
             { $set: req.body},
@@ -30,7 +30,7 @@ router.put("/:id", async (req,res)=>{
 // delete
 
 router.delete("/:id", async (req,res)=>{
-    // const newHospital =new hospital(req.body)
+  
     try{
         await hospital.findByIdAndDelete(req.params.id);
         res.status(200).json("Hospital is been deleted")
@@ -42,7 +42,7 @@ router.delete("/:id", async (req,res)=>{
 // get
 
 router.get("/:id", async (req,res)=>{
-    // const newHospital =new hospital(req.body)
+
     try{
         const Hospital =await hospital.findById(req.params.id)
         res.status(200).json(Hospital)
@@ -53,7 +53,9 @@ router.get("/:id", async (req,res)=>{
 
 // get all
 router.get("/", async (req,res)=>{
-    // const newHospital =new hospital(req.body)
+    
+    console.log("Hospital route")
+    return next()
     try{
         const Hospitals =await hospital.find(req.params.id)
         res.status(200).json(Hospitals)
