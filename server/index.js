@@ -1,12 +1,15 @@
 import  express  from "express";
 import  dotenv  from "dotenv";
 import  mongoose  from "mongoose";
-import auth from "./routes/auth.js"
+import auth from "./routes/auth.js";
+import hospital from "./routes/hospital.js";
+import users from "./routes/users.js";
+import vaccinator from "./routes/vaccinator.js";
+
 const app = express()
 dotenv.config()
 
 const connect = async () => {
-
     try {
         await mongoose.connect(process.env.MONGO);
         console.log("mongoDB")
@@ -26,6 +29,14 @@ mongoose.connection.on("connected", ()=>{
 app.get("/", (req,res)=>{
     res.send("hello first man")
 })
+
+app.use(express.json())
+
+app.use("/server/auth", auth);
+app.use("/server/hospital", hospital);
+app.use("/server/users", users);
+app.use("/server/vaccinator", vaccinator);
+// app.use("/server/auth", auth);
 
 app.listen(8800, ()=>{
     connect()
