@@ -1,18 +1,11 @@
 import express  from "express";
 import hospital from "../models/hospital.js";
+import { createHospital } from "../controllers/hospital.js";
 
-const router = express.Router();
+router = express.Router();
 
 // create
-router.post("/", async (req,res)=>{
-const newHospital =new hospital(req.body)
-try{
-    const savedHospital =await newHospital.save()
-    res.status(200).json(savedHospital)
-}catch(err){
-    res.status(500).json(err)
-}
-})
+router.post("/", createHospital);
 
 // update
 router.put("/:id", async (req,res)=>{
@@ -28,7 +21,6 @@ router.put("/:id", async (req,res)=>{
     })
     
 // delete
-
 router.delete("/:id", async (req,res)=>{
   
     try{
@@ -40,7 +32,6 @@ router.delete("/:id", async (req,res)=>{
     })
 
 // get
-
 router.get("/:id", async (req,res)=>{
 
     try{
@@ -53,16 +44,13 @@ router.get("/:id", async (req,res)=>{
 
 // get all
 router.get("/", async (req,res)=>{
-    
-    console.log("Hospital route")
-    return next()
     try{
-        const Hospitals =await hospital.find(req.params.id)
-        res.status(200).json(Hospitals)
+        const Hospitals =await hospital.find();
+        res.status(200).json(Hospitals);
     }catch(err){
-        res.status(500).json(err)
+        next(err);
     }
-    })
+});
 
 
-export default router
+export default router;
