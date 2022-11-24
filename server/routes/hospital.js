@@ -1,56 +1,33 @@
-import express  from "express";
-import hospital from "../models/hospital.js";
-import { createHospital } from "../controllers/hospital.js";
+import express from "express";
+import {
+  countByCity,
+  countByType,
+  createHospital,
+  deleteHospital,
+  getHospital,
+  getHospitalvaccinators,
+  getHospitals,
+  updateHospital,
+} from "../controllers/hospital.js";
+import Hospital from "../models/hospital.js";
+import {verifyAdmin} from "../utils/verifyToken.js"
+const router = express.Router();
 
-router = express.Router();
+//CREATE
+router.post("/", verifyAdmin, createHospital);
 
-// create
-router.post("/", createHospital);
+//UPDATE
+router.put("/:id", verifyAdmin, updateHospital);
+//DELETE
+router.delete("/:id", verifyAdmin, deleteHospital);
+//GET
 
-// update
-router.put("/:id", async (req,res)=>{
-   
-    try{
-        const updateHospital =await hospital.findByIdAndUpdate(req.params.id, 
-            { $set: req.body},
-            {new: true})
-        res.status(200).json(updateHospital)
-    }catch(err){
-        res.status(500).json(err)
-    }
-    })
-    
-// delete
-router.delete("/:id", async (req,res)=>{
-  
-    try{
-        await hospital.findByIdAndDelete(req.params.id);
-        res.status(200).json("Hospital is been deleted")
-    }catch(err){
-        res.status(500).json(err)
-    }
-    })
+router.get("/find/:id", getHospital);
+//GET ALL
 
-// get
-router.get("/:id", async (req,res)=>{
-
-    try{
-        const Hospital =await hospital.findById(req.params.id)
-        res.status(200).json(Hospital)
-    }catch(err){
-        res.status(500).json(err)
-    }
-    })
-
-// get all
-router.get("/", async (req,res)=>{
-    try{
-        const Hospitals =await hospital.find();
-        res.status(200).json(Hospitals);
-    }catch(err){
-        next(err);
-    }
-});
-
+router.get("/", getHospitals);
+router.get("/countByCity", countByCity);
+router.get("/countByType", countByType);
+router.get("/vaccinator/:id", getHospitalvaccinators);
 
 export default router;
